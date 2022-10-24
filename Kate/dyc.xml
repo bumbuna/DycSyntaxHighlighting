@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE language SYSTEM "language.dtd">
+<language name="Dynamic C" version="0.1" kateversion="5.0" selection="Scripts" extensions="*.dyc" author="Jacob Bumbuna" email="dyc@devbumbuna.com" licence="MIT">
+    <highlighting>
+        <list name="control_flow">
+            <item>if</item>
+            <item>for</item>
+            <item>when</item>
+            <item>is</item>
+            <item>else</item>
+            <item>elif</item>
+            <item>fun</item>
+            <item>var</item>
+            <item>break</item>
+            <item>while</item>
+            <item>continue</item>
+            <item>return</item>
+        </list>
+        <list name="preprocessor_directive">
+            <item>include</item>
+            <item>define</item>
+        </list>
+        <list name="object_type">
+            <item>struct</item>
+            <item>var</item>
+        </list>
+        <list name="general_keyword">
+            <item>in</item>
+            <item>as</item>
+        </list>
+        <contexts>
+            <context name="main" attribute="DycNormal Text" lineEndContext="#stay">
+                <keyword context="#stay" attribute="DycControlFlow" String="control_flow"/>
+                <keyword context="FileName" attribute="DycPreprocessorDirective" String="preprocessor_directive"/>
+                <keyword context="#stay" attribute="DycObjectType" String="object_type"/>
+                <keyword context="#stay" attribute="DycGeneralKeyword" String="general_keyword"/>
+                <DetectChar context="Comment" char="#"/>
+                <DetectChar context="String" char="&quot;" attribute="DycString"/>
+                <Int attribute="DycInt" context="#stay"/>
+                <Float attribute="DycFloat" context="#stay"/>
+                <HlCHex attribute="DycHex" context="#stay"/>
+                <HlCOct attribute="DycOctal" context="#stay"/>
+                <DetectIdentifier attribute="DycIdentifier" context="#stay"/>
+                <DetectChar char="{" beginRegion="true" context="#stay"/>
+                <DetectChar char="}" endRegion="true" context="#stay"/>
+                <RegExpr String="[+-*/%=&lt;&gt;&amp;^]+" context="#stay" attribute="DycOperator"/>
+            </context>
+            <context name="Comment" attribute="DycComment" lineEndContext="#pop"/>
+            <context name="FileName" attribute="DycFileName" lineEndContext="#pop">
+                <DetectIdentifier context="#pop" attribute="DycFileName"/>
+            </context>
+            <context name="String" attribute="DycString" lineEndContext="#stay">
+                <LineContinue attribute="DycLinecontinue" context="#stay"/>
+                <RegExpr String="%\{[a-zA-Z_][a-zA-Z_0-9]*\}" context="#stay" attribute="DycInterpolation"/>
+                <DetectChar char="\" context="EscapeSequence" attribute="DycEscapeSequence" />
+                <DetectChar char="&quot;" context="#pop" attribute="DycString"/>
+            </context>
+            <context name="EscapeSequence" attribute="DycEscapeSequence" lineEndContext="#pop">
+                <RegExpr String="[0-7][0-7][0-7]" context="#pop" attribute="DycEscapeSequence" />
+                <AnyChar String="bftnsr&quot;" attribute="DycEscapeSequence" context="#pop" />
+                <RegExpr String="[Xx][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]" context="#pop" attribute="DycEscapeSequence"/>
+                <RegExpr String="." context="#pop" attribute="DycWarning"/>
+            </context>
+        </contexts>
+        <itemDatas>
+            <itemData name="DycControlFlow" defStyleNum="dsControlFlow" bold="true"/>
+            <itemData name="DycComment" defStyleNum="dsComment"/>
+            <itemData name="DycNormal Text" defStyleNum="dsNormal"/>
+            <itemData name="DycString" defStyleNum="dsString"/>
+            <itemData name="DycInt" defStyleNum="dsDecVal"/>
+            <itemData name="DycFloat" defStyleNum="dsFloat"/>
+            <itemData name="DycHex" defStyleNum="dsBaseN"/>
+            <itemData name="DycOctal" defStyleNum="dsBaseN"/>
+            <itemData name="DycFileName" defStyleNum="dsString" spellChecking="false"/>
+            <itemData name="DycIdentifier" defStyleNum="dsNormal"/>
+            <itemData name="DycOperator" defStyleNum="dsOperator"/>
+            <itemData name="DycPreprocessorDirective" defStyleNum="dsPreprocessor"/>
+            <itemData name="DycGeneralKeyword" defStyleNum="dsKeyword" spellChecking="false"/>
+            <itemData name="DycObjectType" defStyleNum="dsDataType"/>
+            <itemData name="DycInterpolation" defStyleNum="dsDataType"/>
+            <itemData name="DycLinecontinue" defStyleNum="dsSpecialChar"/>
+            <itemData name="DycEscapeSequence" defStyleNum="dsSpecialChar" spellChecking="false"/>
+            <itemdata name="DycWarning" defStyleNum="dsWarning"/>
+        </itemDatas>
+    </highlighting>
+</language>
+
+<general>
+    <comments>
+        <comment name="singleLine" start="#"/>
+    </comments>
+</general>
